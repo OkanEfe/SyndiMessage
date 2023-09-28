@@ -1,4 +1,4 @@
-![N|Solid](./syndicate-logo.png)
+![N|Solid](https://raw.githubusercontent.com/OkanEfe/SyndiMessage/dev/syndicate-logo.png)
 
 # SyndiMessage
 
