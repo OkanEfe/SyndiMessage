@@ -61,18 +61,18 @@ namespace SyndiMessage.Services
         private async Task HandleMessage(object? sender, BasicDeliverEventArgs args)
         {
             var message = Encoding.UTF8.GetString(args.Body.ToArray());
-            Message = JsonSerializer.Deserialize(message, typeof(TMessage)) as TMessage;
             try
             {
+                Message = JsonSerializer.Deserialize(message, typeof(TMessage)) as TMessage;
                 await Handle();
                 Model.BasicAck(args.DeliveryTag, false);
                 Logger.LogInformation($@"{GetType().Name} successfully processed message. Message :{message}");
             }
             catch (Exception e)
             {
+                Logger.LogError(e, message);
                 if (RetryCount > 1)
                 {
-                    Logger.LogError(e, message);
                     int messageRetryCount = 0;
                     var headers = args.BasicProperties.Headers;
 
@@ -91,6 +91,8 @@ namespace SyndiMessage.Services
                         Model.BasicReject(args.DeliveryTag, requeue: false);
                     }
                 }
+                else
+                    Model.BasicReject(args.DeliveryTag, requeue: false);
             }
         }
 
