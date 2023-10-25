@@ -20,22 +20,26 @@ namespace SyndiMessage
             return services;
         }
 
-        public static IServiceCollection AddBrokers<TBroker>(this IServiceCollection services, IEnumerable<TBroker> brokers) where TBroker : RabbitMqConfig
-        {
-            foreach (TBroker broker in brokers)
-            {
-                services.AddBroker(broker);
-            }
-
-            return services;
-        }
-
         public static IServiceCollection AddBroker<TBroker>(this IServiceCollection services, TBroker brokerConfigs) where TBroker : RabbitMqConfig
         {
             services.AddSingleton(typeof(TBroker), brokerConfigs);
             services.AddSingleton<IRabbitMqService<TBroker>, RabbitMqService<TBroker>>(opt =>
             {
                 return new RabbitMqService<TBroker>(brokerConfigs);
+            });
+
+            services.AddSingleton<IModelGenerator<TBroker>, ModelGenerator<TBroker>>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddBroker<TBroker>(this IServiceCollection services, Func<IServiceProvider,TBroker> brokerConfiguration) where TBroker : RabbitMqConfig
+        {
+            services.AddSingleton(typeof(TBroker), brokerConfiguration);
+            services.AddSingleton<IRabbitMqService<TBroker>, RabbitMqService<TBroker>>(opt =>
+            {
+                var brokerConfig = brokerConfiguration.Invoke(opt);
+                return new RabbitMqService<TBroker>(brokerConfig);
             });
 
             services.AddSingleton<IModelGenerator<TBroker>, ModelGenerator<TBroker>>();
