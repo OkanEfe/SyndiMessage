@@ -33,7 +33,6 @@ namespace SyndiMessage.Test.Unit.Attributes
             Assert.NotNull(attribute.RoutingKey);
             Assert.NotEmpty(attribute.RoutingKey);
             Assert.Equal(0, attribute.PrefetchCount);
-
         }
     }
 }
