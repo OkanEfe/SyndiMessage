@@ -1,6 +1,5 @@
-﻿namespace SyndiMessage.Contracts
+﻿namespace SyndiMessage.Contracts;
+
+internal interface IConsume<TMessage>
 {
-    internal interface IConsume<TMessage>
-    {
-    }
 }

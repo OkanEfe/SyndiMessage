@@ -45,6 +45,7 @@ public class SyndiMessage
 
 ```
 
+Also you can add BindingDeclarationAttribute to your message type like MessageDeclarationAttribute. This attribute will set up binding configurations which are those AutoDelete,AutoAck,Exclusive,Durable.
 
 For example ,in the above, we added new class named SyndiMessage and use **MessageDeclaration** Attribute to specify information that it will be going to.
 

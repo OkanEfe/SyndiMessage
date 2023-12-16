@@ -1,10 +1,9 @@
 ﻿using RabbitMQ.Client;
 using SyndiMessage.Configs;
 
-namespace SyndiMessage.Contracts
+namespace SyndiMessage.Contracts;
+
+public interface IModelGenerator<TBrokerConfiguration> where TBrokerConfiguration : RabbitMqConfig
 {
-    public interface IModelGenerator<TBrokerConfiguration> where TBrokerConfiguration : RabbitMqConfig
-    {
-        IModel GenerateModel();
-    }
+    IModel GenerateModel();
 }
